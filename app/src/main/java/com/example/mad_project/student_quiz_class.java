@@ -2,6 +2,7 @@ package com.example.mad_project;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,17 +45,21 @@ public class student_quiz_class extends MainActivity {
     final ArrayList<String> car3 = new ArrayList<String>();
     int random1=97655;
     int minutess;
+    int uniq_no=99332;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.student_quiz_xml );
+        // we are the created a intent variable in6 to get intent
+
         Intent in6 = getIntent();
         final ArrayAdapter<String> array= new ArrayAdapter<>(getApplicationContext(),R.layout.list_view,cars2 );
         Random rand=new Random( );
         random1=rand.nextInt(9999);
         random1+=10000;
         minutess=in6.getIntExtra( "minutes",5 );
+         uniq_no=in6.getIntExtra( "uniq_no",53223 );
 
 
 
@@ -97,12 +103,14 @@ public class student_quiz_class extends MainActivity {
 
 
                             l1.setAdapter( array );
+                            final EditText er23=findViewById( R.id.editTextTextPersonName10 );
 
                             l1.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                                     Toast.makeText( getApplicationContext(), "you have answered  " + i + " " + l, Toast.LENGTH_LONG ).show();
+                                    //adapterView.getChildAt( i ).setBackgroundColor( Color.parseColor( "#000000" ) );
                                     int k09=i-3;
                                     int k19=k09%5;
                                     k19-=1;
@@ -115,6 +123,8 @@ public class student_quiz_class extends MainActivity {
                                         if(k19==-1)
                                         {k19=4;k3451-=1;}
                                         Toast.makeText( getApplicationContext(),"you have answer "+k3451+"question  answer  "+k19,Toast.LENGTH_LONG ).show();
+                                        er23.append( Integer.toString( k3451 ) );
+                                        er23.append( "," );
                                         send_answer_to_firebase(k3451,k19);
                                     }
 
@@ -157,9 +167,8 @@ public class student_quiz_class extends MainActivity {
             minut+=60;
         if(minut-minutess>15)
             Toast.makeText( getApplicationContext(),"your time is completed" ,Toast.LENGTH_LONG).show();
-
-
-         db.collection("QUIZ_ANSWER_DATABASE").document(Integer.toString( random1 )).set( h12 );
+        String errt=Integer.toString( random1 )+"___"+Integer.toString( uniq_no );
+         db.collection("QUIZ_ANSWER_DATABASE").document(errt).set( h12 );
 
         dispatchTakePictureIntent();
 
@@ -190,6 +199,7 @@ public class student_quiz_class extends MainActivity {
 
 
         l1.setAdapter( array );
+        EditText er2=findViewById( R.id.editTextTextPersonName10 );
 
 
 
@@ -199,7 +209,8 @@ public class student_quiz_class extends MainActivity {
                 Toast.makeText( getApplicationContext(), "you have clicked " + i + " " + l, Toast.LENGTH_LONG ).show();
                // findViewById( view.getId() ).setBackgroundColor( -65504 );
                 //gersetBackgroundColor( Integer.parseInt( "#ffffff" ) );
-                view.findViewById( i ).setBackgroundColor( Integer.parseInt( "##4287f5" ) );
+                //view.findViewById( i ).setBackgroundColor( Integer.parseInt( "##4287f5" ) );
+
 
 
             }
